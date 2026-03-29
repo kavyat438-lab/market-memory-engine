@@ -1,8 +1,11 @@
 import requests
 import yfinance as yf
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+import os
 
-NEWS_API_KEY = "675b63c4551e4d14b7655b2b311b7125"
+load_dotenv()
+NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 
 def get_news(query="geopolitical war recession inflation oil federal reserve markets", num_articles=25):
     url = "https://newsapi.org/v2/everything"
