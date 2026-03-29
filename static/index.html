@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Memory</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #f4f3f0;
+  --surface: #ffffff;
+  --border: #e0ddd8;
+  --border-light: #eceae6;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666660;
+  --text-muted: #999994;
+  --accent: #1a6ab1;
+  --accent-light: #e8f0f9;
+  --accent-hover: #145a97;
+  --red: #c0392b;
+  --red-bg: #fdf2f1;
+  --red-border: #f0d0cc;
+  --green: #1e7e4e;
+  --green-bg: #f0f8f4;
+  --green-border: #c8e8d8;
+  --amber: #8a6000;
+  --amber-bg: #fdf8ec;
+  --amber-border: #e8d898;
+  --sidebar-w: 220px;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  padding: 1.8rem 1.5rem 1.2rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.sidebar-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.sidebar-tagline {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+  line-height: 1.4;
+  font-weight: 300;
+}
+
+.sidebar-status {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.sidebar-status-label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.sidebar-status-line {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.sidebar-status-line span {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.sidebar-nav {
+  padding: 1rem 0;
+  flex: 1;
+}
+
+.nav-section-label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: 0.8rem 1.5rem 0.4rem;
+  font-weight: 500;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.12s;
+  border-left: 2px solid transparent;
+}
+
+.nav-item:hover { background: var(--bg); color: var(--text-primary); }
+.nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-light); font-weight: 500; }
+
+.nav-item-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+}
+
+.nav-item.active .nav-item-icon { opacity: 1; }
+
+.nav-item-soon {
+  font-size: 0.58rem;
+  background: var(--border);
+  color: var(--text-muted);
+  padding: 1px 5px;
+  border-radius: 2px;
+  margin-left: auto;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-light);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* MAIN */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* HERO */
+.hero {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease, opacity 0.25s ease;
+  max-height: 400px;
+  opacity: 1;
+}
+
+.hero.collapsed {
+  max-height: 0;
+  padding: 0;
+  opacity: 0;
+  border-bottom: none;
+}
+
+.hero.hidden {
+  display: none;
+}
+
+.hero-inner {
+  padding: 2rem 2.5rem 1.8rem;
+}
+
+.hero-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.hero-collapse-btn {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 0;
+  transition: color 0.12s;
+  white-space: nowrap;
+  margin-top: 0.3rem;
+  user-select: none;
+}
+
+.hero-collapse-btn:hover { color: var(--text-secondary); }
+
+.hero-eyebrow {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.75rem;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title em {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  max-width: 520px;
+  line-height: 1.65;
+  letter-spacing: 0.1px;
+}
+
+.hero-divider {
+  width: 32px;
+  height: 1.5px;
+  background: var(--accent);
+  margin: 0.8rem 0;
+}
+
+/* PAGE CONTENT */
+.page { display: none; padding: 2rem 2.5rem; }
+.page.active { display: block; }
+
+.section-label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* METRICS */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.metric {
+  background: var(--surface);
+  padding: 1.2rem 1.4rem;
+}
+
+.metric-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.metric-value {
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.metric-value.alert { color: var(--red); }
+.metric-value.sm { font-size: 1rem; font-weight: 500; letter-spacing: -0.2px; padding-top: 0.3rem; }
+
+/* CHART */
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.chart-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.chart-card-title {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.chart-card-meta {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.chart-wrap { height: 240px; }
+
+/* NEWS */
+.news-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  transition: border-color 0.12s;
+}
+
+.news-card:hover { border-color: #c8c4be; }
+
+.news-card-header {
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.news-chevron {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+
+.news-chevron.open { transform: rotate(90deg); }
+
+.news-card-title {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  flex: 1;
+  line-height: 1.45;
+}
+
+.news-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.badge {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.badge-geo { background: #e8f0f9; color: #1a5a9a; }
+.badge-monetary { background: #e8f0f9; color: #2a6aaa; }
+.badge-recession { background: #fdf2f1; color: #a02020; }
+.badge-energy { background: #f0f8f4; color: #1a6a40; }
+.badge-sentiment { background: #fdf8ec; color: #7a5000; }
+
+.sev-text {
+  font-size: 0.65rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.sev-high { color: var(--red); }
+.sev-medium { color: var(--amber); }
+.sev-low { color: var(--green); }
+
+.news-card-body {
+  display: none;
+  border-top: 1px solid var(--border-light);
+  padding: 1.2rem 1.4rem;
+}
+
+.news-card-body.open { display: block; }
+
+.news-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1.2rem;
+}
+
+.parallel-bar {
+  border-left: 3px solid var(--accent);
+  padding: 0.6rem 1rem;
+  background: var(--accent-light);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.parallel-bar strong { color: var(--text-primary); font-weight: 500; }
+
+.data-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.data-block-label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.data-values {
+  display: flex;
+  gap: 1.8rem;
+}
+
+.dv-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.dv-value {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+}
+
+.scenario-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 1.2rem;
+}
+
+.scenario-box {
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.scenario-box-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  opacity: 0.65;
+}
+
+.scenario-worst { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red); }
+.scenario-avg { background: var(--amber-bg); border: 1px solid var(--amber-border); color: var(--amber); }
+.scenario-best { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green); }
+
+.read-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.12s;
+}
+
+.read-link:hover { color: var(--accent-hover); }
+
+/* PREDICTIONS */
+.pred-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 6px;
+}
+
+.pred-headline {
+  font-size: 0.83rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+.pred-meta {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+}
+
+.pred-values {
+  display: flex;
+  gap: 2.5rem;
+}
+
+/* ACCURACY SECTION */
+.accuracy-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.accuracy-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.accuracy-toggle-title {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.accuracy-toggle-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.accuracy-toggle-icon {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  transition: transform 0.15s;
+}
+
+.accuracy-toggle-icon.open { transform: rotate(90deg); }
+
+.accuracy-content { display: none; }
+.accuracy-content.open { display: block; }
+
+.run-btn {
+  background: var(--text-primary);
+  color: white;
+  border: none;
+  padding: 0.55rem 1.2rem;
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s;
+  margin-bottom: 1.2rem;
+}
+
+.run-btn:hover { background: #333; }
+
+.backtest-event {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.78rem;
+}
+
+.backtest-event:last-child { border-bottom: none; }
+
+.bt-check { font-size: 0.75rem; width: 16px; flex-shrink: 0; }
+.bt-name { flex: 1; color: var(--text-primary); }
+.bt-date { color: var(--text-muted); font-size: 0.7rem; }
+.bt-pred { color: var(--text-secondary); min-width: 60px; }
+.bt-actual { font-weight: 500; min-width: 60px; }
+.bt-correct { color: var(--green); }
+.bt-wrong { color: var(--red); }
+.bt-error { color: var(--text-muted); min-width: 50px; }
+
+/* LOADING */
+.loading {
+  padding: 2.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 0.8rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-logo">Market Memory</div>
+    <div class="sidebar-tagline">Geopolitical intelligence for modern markets</div>
+  </div>
+
+  <div class="sidebar-status">
+    <div class="sidebar-status-label">Live Status</div>
+    <div class="sidebar-status-line" id="sidebar-status">Loading market data...</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Analysis</div>
+    <div class="nav-item active" onclick="switchPage('analysis', this)">
+      <svg class="nav-item-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="1" y="9" width="3" height="6" rx="0.5"/><rect x="6" y="5" width="3" height="10" rx="0.5"/><rect x="11" y="1" width="3" height="14" rx="0.5"/>
+      </svg>
+      Live Analysis
+    </div>
+    <div class="nav-item" onclick="switchPage('predictions', this)">
+      <svg class="nav-item-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/>
+      </svg>
+      Predictions
+    </div>
+
+    <div class="nav-section-label" style="margin-top:0.5rem">Coming Soon</div>
+    <div class="nav-item" style="opacity:0.5;cursor:not-allowed">
+      <svg class="nav-item-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M2 12l4-4 3 3 5-6"/><circle cx="14" cy="5" r="1.5"/>
+      </svg>
+      Portfolio Simulator
+      <span class="nav-item-soon">Soon</span>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    Data refreshes on load.<br>Predictions verified after 30 days.
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+<!-- HERO -->
+  <div class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-top-row">
+        <div>
+          <div class="hero-eyebrow">Real-time Market Intelligence</div>
+          <h1 class="hero-title">When events move markets,<br><em>history remembers.</em></h1>
+          <div class="hero-divider"></div>
+          <p class="hero-subtitle">Pattern-matched signal intelligence across geopolitical risk, monetary policy shifts, and macro shocks — mapped against decades of market memory to surface probabilistic outcomes before price discovery completes.</p>
+        </div>
+        <span class="hero-collapse-btn" onclick="collapseHero()">Collapse ↑</span>
+      </div>
+    </div>
+  </div>
+  <div id="hero-restore" style="display:none;padding:0.5rem 2.5rem;background:var(--surface);border-bottom:1px solid var(--border)">
+    <span style="font-size:0.68rem;color:var(--text-muted);cursor:pointer;" onclick="collapseHero()">Expand overview ↓</span>
+  </div>
+
+  <!-- LIVE ANALYSIS PAGE -->
+  <div id="page-analysis" class="page active">
+
+    <div class="section-label">Global Markets — Last 7 Days</div>
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <span class="chart-card-title">SPY (US) &amp; NIFTY 50 (India)</span>
+        <span class="chart-card-meta">Dual axis — independent scales</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="marketChart"></canvas>
+      </div>
+    </div>
+
+    <div class="section-label">Today's Pulse</div>
+    <div class="metrics-row" id="metrics-row">
+      <div class="metric"><div class="metric-label">Headlines Analyzed</div><div class="metric-value" id="m-headlines">—</div></div>
+      <div class="metric"><div class="metric-label">Top Category</div><div class="metric-value sm" id="m-category">—</div></div>
+      <div class="metric"><div class="metric-label">Market Sentiment</div><div class="metric-value sm" id="m-sentiment">—</div></div>
+      <div class="metric"><div class="metric-label">High Severity Events</div><div class="metric-value alert" id="m-severity">—</div></div>
+    </div>
+
+    <div class="section-label">Live News Analysis</div>
+    <div id="news-container">
+      <div class="loading"><div class="spinner"></div>Fetching and analyzing headlines...</div>
+    </div>
+
+    <!-- HOW ACCURATE IS THIS -->
+    <div class="accuracy-section">
+      <div class="accuracy-toggle" onclick="toggleAccuracy()">
+        <span class="accuracy-toggle-icon" id="acc-icon">▶</span>
+        <div>
+          <div class="accuracy-toggle-title">How accurate is this?</div>
+          <div class="accuracy-toggle-sub">See how our predictions compare to actual market data across 64 historical events</div>
+        </div>
+      </div>
+      <div class="accuracy-content" id="acc-content">
+        <div id="acc-metrics"></div>
+        <button class="run-btn" onclick="runBacktest()">Run accuracy check</button>
+        <div id="acc-results"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PREDICTIONS PAGE -->
+  <div id="page-predictions" class="page">
+
+    <div class="section-label">Prediction Tracker</div>
+    <div class="metrics-row" style="grid-template-columns:repeat(3,1fr)">
+      <div class="metric"><div class="metric-label">Total Logged</div><div class="metric-value" id="p-total">—</div></div>
+      <div class="metric"><div class="metric-label">Verified</div><div class="metric-value" id="p-verified">—</div></div>
+      <div class="metric"><div class="metric-label">Pending (under 30 days)</div><div class="metric-value" id="p-pending">—</div></div>
+    </div>
+
+    <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1.5rem;line-height:1.6">Every headline analyzed by Market Memory generates a prediction logged here. After 30 days, the system automatically fetches actual market data and measures accuracy.</p>
+
+    <div id="predictions-container">
+      <div class="loading"><div class="spinner"></div>Loading predictions...</div>
+    </div>
+
+  </div>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+const API = 'http://localhost:8000';
+
+function collapseHero() {
+  const hero = document.getElementById('hero');
+  const restore = document.getElementById('hero-restore');
+  hero.classList.toggle('collapsed');
+  restore.style.display = hero.classList.contains('collapsed') ? 'block' : 'none';
+}
+function switchPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  el.classList.add('active');
+
+  const hero = document.getElementById('hero');
+  if (name === 'analysis') {
+    hero.classList.remove('hidden');
+    // restore collapsed state if it was previously collapsed
+  } else {
+    hero.classList.add('hidden');
+  }
+}
+
+function collapseHero() {
+  const hero = document.getElementById('hero');
+  hero.classList.toggle('collapsed');
+  const btn = hero.querySelector('.hero-collapse-btn');
+  btn.textContent = hero.classList.contains('collapsed') ? 'Expand ↓' : 'Collapse ↑';
+}
+
+function toggleNews(id) {
+  document.getElementById('body-' + id).classList.toggle('open');
+  document.getElementById('chev-' + id).classList.toggle('open');
+}
+
+function toggleAccuracy() {
+  document.getElementById('acc-content').classList.toggle('open');
+  document.getElementById('acc-icon').classList.toggle('open');
+}
+
+function fmt(val) {
+  if (val === null || val === undefined) return '—';
+  const n = parseFloat(val);
+  return (n > 0 ? '+' : '') + n.toFixed(1) + '%';
+}
+
+function fmtCat(cat) {
+  const map = {
+    geopolitical: 'Geopolitical',
+    monetary_policy: 'Monetary Policy',
+    recession_risk: 'Recession Risk',
+    energy_crisis: 'Energy Crisis',
+    market_sentiment: 'Market Sentiment'
+  };
+  return map[cat] || cat;
+}
+
+function badgeClass(cat) {
+  const map = {
+    geopolitical: 'badge-geo',
+    monetary_policy: 'badge-monetary',
+    recession_risk: 'badge-recession',
+    energy_crisis: 'badge-energy',
+    market_sentiment: 'badge-sentiment'
+  };
+  return map[cat] || 'badge-geo';
+}
+
+async function loadMarkets() {
+  try {
+    const res = await fetch(API + '/api/markets');
+    const data = await res.json();
+
+    const labels = data.map(d => {
+      const date = d.date ? d.date.split('T')[0] : String(d.date);
+      return date;
+    });
+    const spy = data.map(d => d.SPY);
+    const nifty = data.map(d => d.NIFTY);
+
+    const ctx = document.getElementById('marketChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'SPY (USD)',
+            data: spy,
+            borderColor: '#1a6ab1',
+            borderWidth: 1.5,
+            pointRadius: 3,
+            pointBackgroundColor: '#1a6ab1',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1,
+            yAxisID: 'y1',
+            tension: 0.4,
+            fill: false
+          },
+          {
+            label: 'NIFTY 50 (INR)',
+            data: nifty,
+            borderColor: '#999994',
+            borderWidth: 1.5,
+            borderDash: [4, 3],
+            pointRadius: 3,
+            pointBackgroundColor: '#999994',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1,
+            yAxisID: 'y2',
+            tension: 0.4,
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#666660',
+              font: { family: 'DM Sans', size: 11, weight: '400' },
+              usePointStyle: true,
+              pointStyleWidth: 8
+            }
+          },
+          tooltip: {
+            backgroundColor: '#fff',
+            borderColor: '#e0ddd8',
+            borderWidth: 1,
+            titleColor: '#1a1a1a',
+            bodyColor: '#666660',
+            titleFont: { family: 'DM Sans', size: 11, weight: '500' },
+            bodyFont: { family: 'DM Sans', size: 11 }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#999994', font: { size: 10, family: 'DM Sans' }, maxTicksLimit: 6 },
+            grid: { color: '#f0ede8' },
+            border: { color: '#e0ddd8' }
+          },
+          y1: {
+            position: 'left',
+            ticks: { color: '#999994', font: { size: 10, family: 'DM Sans' } },
+            grid: { color: '#f0ede8' },
+            border: { color: '#e0ddd8' },
+            title: { display: true, text: 'SPY (USD)', color: '#999994', font: { size: 10, family: 'DM Sans' } }
+          },
+          y2: {
+            position: 'right',
+            ticks: { color: '#999994', font: { size: 10, family: 'DM Sans' } },
+            grid: { drawOnChartArea: false },
+            border: { color: '#e0ddd8' },
+            title: { display: true, text: 'NIFTY (INR)', color: '#999994', font: { size: 10, family: 'DM Sans' } }
+          }
+        }
+      }
+    });
+  } catch(e) { console.error('Market load error:', e); }
+}
+
+async function loadNews() {
+  try {
+    const res = await fetch(API + '/api/news');
+    const articles = await res.json();
+
+    const categories = articles.map(a => a.category);
+    const sentiments = articles.map(a => a.sentiment.sentiment);
+    const severities = articles.map(a => a.severity);
+
+    const freq = arr => arr.reduce((acc, v) => { acc[v] = (acc[v]||0)+1; return acc; }, {});
+    const topCat = Object.entries(freq(categories)).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
+    const topSent = Object.entries(freq(sentiments)).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
+    const highSev = severities.filter(s => s === 'high').length;
+
+    document.getElementById('m-headlines').textContent = articles.length;
+    document.getElementById('m-category').textContent = fmtCat(topCat);
+    document.getElementById('m-sentiment').textContent = topSent.charAt(0).toUpperCase() + topSent.slice(1);
+    document.getElementById('m-severity').textContent = highSev;
+
+    // sidebar status
+    document.getElementById('sidebar-status').innerHTML =
+      `Top theme: <span>${fmtCat(topCat)}</span><br>${highSev} high severity event${highSev !== 1 ? 's' : ''} today`;
+
+    const container = document.getElementById('news-container');
+    if (!articles.length) {
+      container.innerHTML = '<div class="empty-state">No classified headlines at this time.</div>';
+      return;
+    }
+
+    container.innerHTML = articles.map((a, i) => {
+      const bc = badgeClass(a.category);
+      const sevClass = 'sev-' + a.severity;
+      const catLabel = fmtCat(a.category);
+      const sentLabel = a.sentiment.sentiment.charAt(0).toUpperCase() + a.sentiment.sentiment.slice(1);
+
+      const matchHtml = a.match ? `
+        <div class="parallel-bar">
+          Closest historical parallel: <strong>${a.match.matched_event}</strong> (${a.match.match_score}% match)
+          &mdash; S&P ${fmt(a.match.sp500_t30)} over 30 days &nbsp;&middot;&nbsp; Oil ${fmt(a.match.oil_t30)} &nbsp;&middot;&nbsp; Gold ${fmt(a.match.gold_t30)}
+        </div>` : '';
+
+      const reactionHtml = a.reaction ? `
+        <div class="data-row">
+          <div>
+            <div class="data-block-label">S&P 500 Avg Reaction &middot; ${a.reaction.matched_events} events matched</div>
+            <div class="data-values">
+              <div><div class="dv-label">Next day</div><div class="dv-value">${fmt(a.reaction.avg_sp500_t1)}</div></div>
+              <div><div class="dv-label">Next week</div><div class="dv-value">${fmt(a.reaction.avg_sp500_t5)}</div></div>
+              <div><div class="dv-label">Next month</div><div class="dv-value">${fmt(a.reaction.avg_sp500_t30)}</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="data-block-label">Gold &amp; Oil — Next Month</div>
+            <div class="data-values">
+              <div><div class="dv-label">Gold</div><div class="dv-value">${fmt(a.reaction.avg_gold_t30)}</div></div>
+              <div><div class="dv-label">Oil</div><div class="dv-value">${fmt(a.reaction.avg_oil_t30)}</div></div>
+            </div>
+          </div>
+        </div>` : '';
+
+      const scenarioHtml = a.scenario ? `
+        <div class="scenario-row">
+          <div class="scenario-box scenario-worst">
+            <div class="scenario-box-label">Worst case</div>
+            S&P ${fmt(a.scenario.worst.sp500)} &middot; Oil ${fmt(a.scenario.worst.oil)} &middot; Gold ${fmt(a.scenario.worst.gold)}
+          </div>
+          <div class="scenario-box scenario-avg">
+            <div class="scenario-box-label">Average case</div>
+            S&P ${fmt(a.scenario.average.sp500)} &middot; Oil ${fmt(a.scenario.average.oil)} &middot; Gold ${fmt(a.scenario.average.gold)}
+          </div>
+          <div class="scenario-box scenario-best">
+            <div class="scenario-box-label">Best case</div>
+            S&P ${fmt(a.scenario.best.sp500)} &middot; Oil ${fmt(a.scenario.best.oil)} &middot; Gold ${fmt(a.scenario.best.gold)}
+          </div>
+        </div>` : '';
+
+      return `
+        <div class="news-card">
+          <div class="news-card-header" onclick="toggleNews(${i})">
+            <span class="news-chevron" id="chev-${i}">▶</span>
+            <span class="news-card-title">${a.title}</span>
+            <div class="news-card-badges">
+              <span class="badge ${bc}">${catLabel}</span>
+              <span class="sev-text ${sevClass}">${a.severity.toUpperCase()}</span>
+            </div>
+          </div>
+          <div class="news-card-body" id="body-${i}">
+            <div class="news-meta">
+              <span>${a.source}</span>
+              <span>${a.published_at}</span>
+              <span>Sentiment: ${sentLabel}</span>
+            </div>
+            ${matchHtml}
+            ${reactionHtml}
+            ${scenarioHtml}
+            <a href="${a.url}" target="_blank" class="read-link">Read full article &rarr;</a>
+          </div>
+        </div>`;
+    }).join('');
+
+  } catch(e) {
+    document.getElementById('news-container').innerHTML = '<div class="empty-state">Could not load news. Is the API server running?</div>';
+    console.error(e);
+  }
+}
+
+async function loadPredictions() {
+  try {
+    const res = await fetch(API + '/api/predictions');
+    const predictions = await res.json();
+
+    const verified = predictions.filter(p => p.verified);
+    const pending = predictions.filter(p => !p.verified);
+
+    document.getElementById('p-total').textContent = predictions.length;
+    document.getElementById('p-verified').textContent = verified.length;
+    document.getElementById('p-pending').textContent = pending.length;
+
+    const container = document.getElementById('predictions-container');
+
+    const renderList = (items, isVerified) => items.map(p => `
+      <div class="pred-card">
+        <div class="pred-headline">${p.headline}</div>
+        <div class="pred-meta">${p.date_logged} &middot; ${fmtCat(p.category)} &middot; ${p.severity}</div>
+        <div class="pred-values">
+          <div><div class="dv-label">Predicted S&P (next month)</div><div class="dv-value">${fmt(p.predicted_sp500_t30)}</div></div>
+          ${isVerified
+            ? `<div><div class="dv-label">Actual S&P (next month)</div><div class="dv-value">${fmt(p.actual_sp500_t30)}</div></div>
+               <div><div class="dv-label">Difference</div><div class="dv-value">${fmt(p.actual_sp500_t30 - p.predicted_sp500_t30)}</div></div>`
+            : `<div><div class="dv-label">Worst case</div><div class="dv-value">${fmt(p.worst_sp500_t30)}</div></div>
+               <div><div class="dv-label">Best case</div><div class="dv-value">${fmt(p.best_sp500_t30)}</div></div>`
+          }
+        </div>
+      </div>`).join('');
+
+    container.innerHTML = `
+      ${verified.length ? `<div class="section-label">Verified</div>${renderList(verified, true)}` : ''}
+      ${pending.length ? `<div class="section-label">Pending — verified after 30 days</div>${renderList(pending, false)}` : ''}
+      ${!predictions.length ? '<div class="empty-state">No predictions logged yet. Open Live Analysis to start.</div>' : ''}
+    `;
+  } catch(e) { console.error(e); }
+}
+
+async function runBacktest() {
+  document.getElementById('acc-results').innerHTML = '<div class="loading"><div class="spinner"></div>Checking accuracy across historical events — this takes about a minute...</div>';
+
+  try {
+    const res = await fetch(API + '/api/backtest');
+    const results = await res.json();
+
+    if (!results.length) {
+      document.getElementById('acc-results').innerHTML = '<div class="empty-state">No results returned.</div>';
+      return;
+    }
+
+    const avgError = (results.reduce((s, r) => s + r.error_t30, 0) / results.length).toFixed(1);
+    const dirAcc = ((results.filter(r => r.direction_correct_t30).length / results.length) * 100).toFixed(0);
+    const correct = results.filter(r => r.direction_correct_t30).length;
+
+    document.getElementById('acc-metrics').innerHTML = `
+      <div class="metrics-row" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.2rem">
+        <div class="metric"><div class="metric-label">Events Tested</div><div class="metric-value">${results.length}</div></div>
+        <div class="metric"><div class="metric-label">Direction Correct</div><div class="metric-value">${dirAcc}%</div></div>
+        <div class="metric"><div class="metric-label">Avg Error</div><div class="metric-value">${avgError}%</div></div>
+      </div>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.5">
+        The system correctly predicted whether markets would go up or down ${dirAcc}% of the time across ${results.length} historical events. 
+        On average, predictions were off by ${avgError} percentage points — largely because markets recover faster than historical averages suggest.
+      </p>`;
+
+    document.getElementById('acc-results').innerHTML = `
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+        <div style="padding:0.8rem 1.2rem;border-bottom:1px solid var(--border-light);display:grid;grid-template-columns:16px 1fr 80px 70px 70px 60px;gap:1rem;font-size:0.62rem;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);font-weight:500">
+          <span></span><span>Event</span><span>Predicted</span><span>Actual</span><span>Direction</span><span>Error</span>
+        </div>
+        <div style="padding:0 1.2rem">
+          ${results.map(r => `
+            <div class="backtest-event">
+              <span class="bt-check ${r.direction_correct_t30 ? 'bt-correct' : 'bt-wrong'}">${r.direction_correct_t30 ? '✓' : '✗'}</span>
+              <span class="bt-name">${r.event} <span class="bt-date">${r.date}</span></span>
+              <span class="bt-pred">${fmt(r.predicted_t30)}</span>
+              <span class="bt-actual ${r.direction_correct_t30 ? 'bt-correct' : 'bt-wrong'}">${fmt(r.actual_t30)}</span>
+              <span class="${r.direction_correct_t30 ? 'bt-correct' : 'bt-wrong'}" style="font-size:0.72rem;font-weight:500">${r.direction_correct_t30 ? 'Correct' : 'Wrong'}</span>
+              <span class="bt-error">${r.error_t30}%</span>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  } catch(e) {
+    document.getElementById('acc-results').innerHTML = '<div class="empty-state">Error running accuracy check. Is the API running?</div>';
+    console.error(e);
+  }
+}
+
+loadMarkets();
+loadNews();
+loadPredictions();
+</script>
+</body>
+</html>
