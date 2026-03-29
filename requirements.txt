@@ -4,3 +4,4 @@ yfinance
 requests
 plotly
 textblob
+sentence-transformers
