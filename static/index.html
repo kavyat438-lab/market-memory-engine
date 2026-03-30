@@ -638,6 +638,239 @@ body {
   font-size: 0.82rem;
   font-style: italic;
 }
+
+/* PORTFOLIO */
+.port-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.port-form-title {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.port-input-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 8px;
+  align-items: end;
+  margin-bottom: 8px;
+}
+
+.port-input-group { display: flex; flex-direction: column; gap: 4px; }
+
+.port-input-label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.port-input {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  background: var(--bg);
+  transition: border-color 0.12s;
+  width: 100%;
+}
+
+.port-input:focus { outline: none; border-color: var(--accent); background: #fff; }
+.port-input::placeholder { color: var(--text-muted); }
+
+.port-btn {
+  padding: 0.45rem 1rem;
+  border-radius: 4px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.12s;
+  border: none;
+  white-space: nowrap;
+}
+
+.port-btn-add { background: var(--text-primary); color: white; }
+.port-btn-add:hover { background: #333; }
+.port-btn-analyze { background: var(--accent); color: white; margin-top: 1rem; padding: 0.55rem 1.4rem; }
+.port-btn-analyze:hover { background: var(--accent-hover); }
+
+.port-holdings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.port-holdings-table th {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  font-weight: 500;
+  padding: 0.5rem 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.port-holdings-table td {
+  padding: 0.7rem 0.8rem;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.port-holdings-table tr:last-child td { border-bottom: none; }
+.port-holdings-table tr:hover td { background: var(--bg); }
+
+.port-remove-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: all 0.12s;
+}
+
+.port-remove-btn:hover { color: var(--red); background: var(--red-bg); }
+
+.port-change-pos { color: var(--green); font-weight: 500; }
+.port-change-neg { color: var(--red); font-weight: 500; }
+.port-change-neu { color: var(--text-muted); }
+
+.exposure-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 8px;
+}
+
+.exposure-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.exposure-headline {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  flex: 1;
+  line-height: 1.4;
+  margin-right: 1rem;
+}
+
+.exposure-stocks {
+  margin-top: 0.8rem;
+}
+
+.exposure-stock-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.exposure-stock-row:last-child { border-bottom: none; }
+
+.exposure-stock-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  min-width: 80px;
+}
+
+.exposure-stock-desc {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.exposure-bar-wrap {
+  width: 120px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.exposure-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.exposure-bar-high { background: var(--red); }
+.exposure-bar-medium { background: var(--amber); }
+.exposure-bar-low { background: var(--green); }
+
+.exposure-pct {
+  font-size: 0.72rem;
+  font-weight: 500;
+  min-width: 36px;
+  text-align: right;
+}
+
+.exposure-high { color: var(--red); }
+.exposure-medium { color: var(--amber); }
+.exposure-low { color: var(--green); }
+
+.port-summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.port-risk-meter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.8rem;
+}
+
+.port-risk-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  min-width: 80px;
+}
+
+.port-risk-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.port-risk-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.port-risk-score {
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 50px;
+  text-align: right;
+}
 </style>
 </head>
 <body>
@@ -669,13 +902,11 @@ body {
       Predictions
     </div>
 
-    <div class="nav-section-label" style="margin-top:0.5rem">Coming Soon</div>
-    <div class="nav-item" style="opacity:0.5;cursor:not-allowed">
+    <div class="nav-item" onclick="switchPage('portfolio', this)">
       <svg class="nav-item-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M2 12l4-4 3 3 5-6"/><circle cx="14" cy="5" r="1.5"/>
       </svg>
       Portfolio Simulator
-      <span class="nav-item-soon">Soon</span>
     </div>
   </nav>
 
@@ -766,6 +997,96 @@ body {
     <div id="predictions-container">
       <div class="loading"><div class="spinner"></div>Loading predictions...</div>
     </div>
+
+  </div>
+
+
+  <!-- PORTFOLIO PAGE -->
+  <div id="page-portfolio" class="page">
+
+    <div class="section-label">Portfolio Simulator</div>
+
+    <div class="port-form">
+      <div class="port-form-title">Add holdings — enter ticker symbol, quantity and purchase price</div>
+      <div class="port-input-row">
+        <div class="port-input-group" style="position:relative">
+          <label class="port-input-label">Stock</label>
+          <input class="port-input" id="p-ticker" placeholder="Search by name or ticker..."
+                 oninput="searchTicker(this.value)" autocomplete="off" />
+          <div id="ticker-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid var(--border);border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,0.08);z-index:200;max-height:220px;overflow-y:auto;"></div>
+        </div>
+        <div class="port-input-group">
+          <label class="port-input-label">Quantity</label>
+          <input class="port-input" id="p-qty" type="number" placeholder="10" />
+        </div>
+        <div class="port-input-group">
+          <label class="port-input-label">Buy Price</label>
+          <input class="port-input" id="p-buy" type="number" placeholder="150.00" />
+        </div>
+        <button class="port-btn port-btn-add" onclick="addHolding()">Add</button>
+      </div>
+      <p style="font-size:0.68rem;color:var(--text-muted);margin-top:0.3rem">
+        Search by company name or ticker &nbsp;&middot;&nbsp; Indian and US stocks supported
+      </p>
+    </div>
+
+    <div id="port-holdings-section" style="display:none">
+      <div class="section-label">Your Holdings</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:1.5rem">
+        <table class="port-holdings-table">
+          <thead>
+            <tr>
+              <th>Ticker</th>
+              <th>Qty</th>
+              <th>Buy Price</th>
+              <th>Current Price</th>
+              <th>P&amp;L</th>
+              <th>Value</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="port-holdings-body"></tbody>
+        </table>
+      </div>
+
+      <div class="port-summary-card" id="port-summary" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:1.2rem">
+          <div style="background:var(--surface);padding:0.8rem 1rem">
+            <div class="metric-label">Total Value</div>
+            <div class="metric-value" style="font-size:1.2rem" id="port-total-value">—</div>
+          </div>
+          <div style="background:var(--surface);padding:0.8rem 1rem">
+            <div class="metric-label">Total Cost</div>
+            <div class="metric-value" style="font-size:1.2rem" id="port-total-cost">—</div>
+          </div>
+          <div style="background:var(--surface);padding:0.8rem 1rem">
+            <div class="metric-label">Total P&amp;L</div>
+            <div class="metric-value" style="font-size:1.2rem" id="port-total-pnl">—</div>
+          </div>
+          <div style="background:var(--surface);padding:0.8rem 1rem">
+            <div class="metric-label">Overall Return</div>
+            <div class="metric-value" style="font-size:1.2rem" id="port-total-return">—</div>
+          </div>
+        </div>
+
+        <div class="port-risk-meter">
+          <span class="port-risk-label">Current Risk Exposure</span>
+          <div class="port-risk-bar-wrap">
+            <div class="port-risk-bar-fill" id="port-risk-bar" style="width:0%"></div>
+          </div>
+          <span class="port-risk-score" id="port-risk-score">—</span>
+        </div>
+        <p style="font-size:0.68rem;color:var(--text-muted);margin-top:0.4rem" id="port-risk-desc"></p>
+      </div>
+
+      <div id="port-exposure-section" style="display:none">
+        <div class="section-label">Event Exposure Analysis</div>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.6" id="port-exposure-intro"></p>
+        <div id="port-exposure-list"></div>
+      </div>
+    </div>
+
+    <div class="empty-state" id="port-empty">Add your first holding above to get started.</div>
 
   </div>
 
@@ -1133,6 +1454,334 @@ async function runBacktest() {
 loadMarkets();
 loadNews();
 loadPredictions();
+
+// PORTFOLIO SIMULATOR
+let portfolio = [];
+let newsCache = null;
+
+const SECTOR_MAP = {
+  geopolitical: {
+    keywords: ['defense', 'oil', 'energy', 'commodity', 'bank', 'finance', 'insurance', 'airline', 'travel', 'shipping'],
+    tickers: { 'RELIANCE.NS': 'energy', 'ONGC.NS': 'energy', 'IOC.NS': 'energy', 'BPCL.NS': 'energy',
+               'HAL.NS': 'defense', 'BEL.NS': 'defense', 'AXISBANK.NS': 'finance', 'HDFCBANK.NS': 'finance',
+               'ICICIBANK.NS': 'finance', 'XOM': 'energy', 'CVX': 'energy', 'LMT': 'defense', 'RTX': 'defense',
+               'BA': 'defense', 'GS': 'finance', 'JPM': 'finance', 'C': 'finance' }
+  },
+  monetary_policy: {
+    keywords: ['bank', 'finance', 'real estate', 'reit', 'bond', 'utility'],
+    tickers: { 'HDFCBANK.NS': 'finance', 'ICICIBANK.NS': 'finance', 'AXISBANK.NS': 'finance',
+               'KOTAKBANK.NS': 'finance', 'SBIN.NS': 'finance', 'JPM': 'finance', 'BAC': 'finance',
+               'GS': 'finance', 'MS': 'finance', 'WFC': 'finance' }
+  },
+  recession_risk: {
+    keywords: ['consumer', 'retail', 'auto', 'manufacturing', 'industrial'],
+    tickers: { 'MARUTI.NS': 'auto', 'TATAMOTORS.NS': 'auto', 'HEROMOTOCO.NS': 'auto',
+               'TITAN.NS': 'consumer', 'HINDUNILVR.NS': 'consumer', 'TSLA': 'auto',
+               'F': 'auto', 'GM': 'auto', 'AMZN': 'consumer', 'WMT': 'consumer' }
+  },
+  energy_crisis: {
+    keywords: ['oil', 'gas', 'energy', 'power', 'utility', 'coal'],
+    tickers: { 'RELIANCE.NS': 'energy', 'ONGC.NS': 'energy', 'IOC.NS': 'energy', 'BPCL.NS': 'energy',
+               'NTPC.NS': 'power', 'POWERGRID.NS': 'power', 'XOM': 'energy', 'CVX': 'energy',
+               'COP': 'energy', 'SLB': 'energy', 'NEE': 'power' }
+  },
+  market_sentiment: {
+    keywords: ['tech', 'growth', 'startup', 'crypto', 'fintech'],
+    tickers: { 'INFY.NS': 'tech', 'TCS.NS': 'tech', 'WIPRO.NS': 'tech', 'HCLTECH.NS': 'tech',
+               'TECHM.NS': 'tech', 'AAPL': 'tech', 'MSFT': 'tech', 'GOOGL': 'tech',
+               'META': 'tech', 'NVDA': 'tech', 'AMZN': 'tech' }
+  }
+};
+
+function getExposureLevel(ticker, category) {
+  const map = SECTOR_MAP[category];
+  if (!map) return null;
+  if (map.tickers[ticker.toUpperCase()]) return 'high';
+  const t = ticker.toLowerCase();
+  for (const kw of map.keywords) {
+    if (t.includes(kw)) return 'medium';
+  }
+  return 'low';
+}
+
+function getExposureDesc(ticker, category, level) {
+  const descs = {
+    geopolitical: {
+      high: 'Directly exposed — geopolitical events historically impact this sector significantly',
+      medium: 'Moderately exposed — indirect supply chain or commodity price effects likely',
+      low: 'Low direct exposure — monitor for second-order effects'
+    },
+    monetary_policy: {
+      high: 'High sensitivity — interest rate changes directly affect earnings and valuation',
+      medium: 'Some sensitivity — borrowing costs and credit conditions may shift',
+      low: 'Limited sensitivity to rate environment'
+    },
+    recession_risk: {
+      high: 'Cyclically sensitive — earnings typically contract in downturns',
+      medium: 'Some cyclicality — watch consumer confidence and spending data',
+      low: 'Relatively defensive — lower recession sensitivity'
+    },
+    energy_crisis: {
+      high: 'Direct exposure — input costs or revenues tied to energy prices',
+      medium: 'Indirect exposure — energy costs affect margins',
+      low: 'Limited energy price sensitivity'
+    },
+    market_sentiment: {
+      high: 'High beta to sentiment — valuation multiples compress in risk-off environments',
+      medium: 'Some sentiment exposure — growth expectations may be revised',
+      low: 'Defensive characteristics — lower sentiment correlation'
+    }
+  };
+  return descs[category]?.[level] || 'Exposure level assessed based on sector classification';
+}
+
+
+let searchTimeout = null;
+
+async function searchTicker(query) {
+  const dropdown = document.getElementById('ticker-dropdown');
+  if (!query || query.length < 2) {
+    dropdown.style.display = 'none';
+    return;
+  }
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(async () => {
+    try {
+      const res = await fetch(API + '/api/search?q=' + encodeURIComponent(query));
+      const results = await res.json();
+      if (!results.length) {
+        dropdown.style.display = 'none';
+        return;
+      }
+      dropdown.innerHTML = results.map(r => `
+        <div onclick="selectTicker('${r.ticker}', '${r.name.replace(/'/g, '')}')" style="
+          padding:0.6rem 0.9rem;
+          cursor:pointer;
+          border-bottom:1px solid var(--border-light);
+          transition:background 0.1s;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:0.5rem;
+        " onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='white'">
+          <div>
+            <div style="font-size:0.8rem;font-weight:500;color:var(--text-primary)">${r.name || r.ticker}</div>
+            <div style="font-size:0.68rem;color:var(--text-muted)">${r.ticker} &middot; ${r.exchange}</div>
+          </div>
+        </div>
+      `).join('');
+      dropdown.style.display = 'block';
+    } catch(e) {
+      dropdown.style.display = 'none';
+    }
+  }, 300);
+}
+
+function selectTicker(ticker, name) {
+  document.getElementById('p-ticker').value = ticker;
+  document.getElementById('ticker-dropdown').style.display = 'none';
+  document.getElementById('p-qty').focus();
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#ticker-dropdown') && e.target.id !== 'p-ticker') {
+    const dd = document.getElementById('ticker-dropdown');
+    if (dd) dd.style.display = 'none';
+  }
+});
+
+async function addHolding() {
+  const ticker = document.getElementById('p-ticker').value.trim().toUpperCase();
+  const qty = parseFloat(document.getElementById('p-qty').value);
+  const buyPrice = parseFloat(document.getElementById('p-buy').value);
+
+  if (!ticker || !qty || !buyPrice) {
+    alert('Please fill in all fields');
+    return;
+  }
+
+  if (portfolio.find(h => h.ticker === ticker)) {
+    alert('Ticker already in portfolio');
+    return;
+  }
+
+  portfolio.push({ ticker, qty, buyPrice, currentPrice: null, changePct: null });
+
+  document.getElementById('p-ticker').value = '';
+  document.getElementById('p-qty').value = '';
+  document.getElementById('p-buy').value = '';
+
+  document.getElementById('port-empty').style.display = 'none';
+  document.getElementById('port-holdings-section').style.display = 'block';
+
+  await refreshPortfolio();
+}
+
+function removeHolding(ticker) {
+  portfolio = portfolio.filter(h => h.ticker !== ticker);
+  if (portfolio.length === 0) {
+    document.getElementById('port-empty').style.display = 'block';
+    document.getElementById('port-holdings-section').style.display = 'none';
+    document.getElementById('port-summary').style.display = 'none';
+    document.getElementById('port-exposure-section').style.display = 'none';
+  } else {
+    refreshPortfolio();
+  }
+}
+
+async function refreshPortfolio() {
+  const tickers = portfolio.map(h => h.ticker);
+
+  // fetch prices
+  try {
+    const res = await fetch(API + '/api/portfolio/prices', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tickers })
+    });
+    const prices = await res.json();
+
+    portfolio.forEach(h => {
+      if (prices[h.ticker] && !prices[h.ticker].error) {
+        h.currentPrice = prices[h.ticker].price;
+        h.changePct = prices[h.ticker].change_pct;
+      }
+    });
+  } catch(e) { console.error('Price fetch error:', e); }
+
+  renderHoldings();
+  renderSummary();
+  await renderExposure();
+}
+
+function renderHoldings() {
+  const tbody = document.getElementById('port-holdings-body');
+  tbody.innerHTML = portfolio.map(h => {
+    const cur = h.currentPrice;
+    const cost = h.qty * h.buyPrice;
+    const value = cur ? h.qty * cur : null;
+    const pnl = value ? value - cost : null;
+    const ret = pnl ? (pnl / cost) * 100 : null;
+    const chgClass = h.changePct > 0 ? 'port-change-pos' : h.changePct < 0 ? 'port-change-neg' : 'port-change-neu';
+    const pnlClass = pnl > 0 ? 'port-change-pos' : pnl < 0 ? 'port-change-neg' : 'port-change-neu';
+
+    return `<tr>
+      <td style="font-weight:500">${h.ticker}</td>
+      <td>${h.qty}</td>
+      <td>${h.buyPrice.toFixed(2)}</td>
+      <td>
+        ${cur ? cur.toFixed(2) : '<span style="color:var(--text-muted)">Loading...</span>'}
+        ${h.changePct !== null ? `<span class="${chgClass}" style="font-size:0.68rem;margin-left:4px">${h.changePct > 0 ? '+' : ''}${h.changePct.toFixed(2)}%</span>` : ''}
+      </td>
+      <td class="${pnlClass}">${pnl !== null ? (pnl > 0 ? '+' : '') + pnl.toFixed(2) : '—'}</td>
+      <td>${value !== null ? value.toFixed(2) : '—'}</td>
+      <td><button class="port-remove-btn" onclick="removeHolding('${h.ticker}')">Remove</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderSummary() {
+  const withPrices = portfolio.filter(h => h.currentPrice);
+  if (!withPrices.length) return;
+
+  const totalValue = withPrices.reduce((s, h) => s + h.qty * h.currentPrice, 0);
+  const totalCost = portfolio.reduce((s, h) => s + h.qty * h.buyPrice, 0);
+  const totalPnl = totalValue - totalCost;
+  const totalReturn = (totalPnl / totalCost) * 100;
+
+  document.getElementById('port-total-value').textContent = totalValue.toFixed(2);
+  document.getElementById('port-total-cost').textContent = totalCost.toFixed(2);
+
+  const pnlEl = document.getElementById('port-total-pnl');
+  pnlEl.textContent = (totalPnl > 0 ? '+' : '') + totalPnl.toFixed(2);
+  pnlEl.style.color = totalPnl > 0 ? 'var(--green)' : totalPnl < 0 ? 'var(--red)' : 'var(--text-primary)';
+
+  const retEl = document.getElementById('port-total-return');
+  retEl.textContent = (totalReturn > 0 ? '+' : '') + totalReturn.toFixed(2) + '%';
+  retEl.style.color = totalReturn > 0 ? 'var(--green)' : totalReturn < 0 ? 'var(--red)' : 'var(--text-primary)';
+
+  document.getElementById('port-summary').style.display = 'block';
+}
+
+async function renderExposure() {
+  // get cached news or fetch
+  if (!newsCache) {
+    try {
+      const res = await fetch(API + '/api/news');
+      newsCache = await res.json();
+    } catch(e) { return; }
+  }
+
+  // find high severity articles
+  const relevant = newsCache.filter(a => a.severity === 'high' || a.severity === 'medium').slice(0, 6);
+  if (!relevant.length) return;
+
+  // compute overall risk score
+  let totalExposure = 0;
+  let exposureCount = 0;
+
+  relevant.forEach(article => {
+    portfolio.forEach(h => {
+      const level = getExposureLevel(h.ticker, article.category);
+      if (level === 'high') totalExposure += 3;
+      else if (level === 'medium') totalExposure += 1.5;
+      else totalExposure += 0.3;
+      exposureCount++;
+    });
+  });
+
+  const rawScore = exposureCount > 0 ? (totalExposure / (exposureCount * 3)) * 100 : 0;
+  const riskScore = Math.min(100, Math.round(rawScore));
+  const riskColor = riskScore >= 65 ? 'var(--red)' : riskScore >= 35 ? 'var(--amber)' : 'var(--green)';
+  const riskLabel = riskScore >= 65 ? 'High' : riskScore >= 35 ? 'Moderate' : 'Low';
+
+  document.getElementById('port-risk-bar').style.width = riskScore + '%';
+  document.getElementById('port-risk-bar').style.background = riskColor;
+  document.getElementById('port-risk-score').textContent = riskLabel + ' (' + riskScore + ')';
+  document.getElementById('port-risk-score').style.color = riskColor;
+  document.getElementById('port-risk-desc').textContent =
+    riskScore >= 65
+      ? 'Your portfolio has significant exposure to current market events. Review high-exposure positions.'
+      : riskScore >= 35
+      ? 'Moderate exposure detected. Some holdings may be affected by current conditions.'
+      : 'Portfolio shows low sensitivity to current macro and geopolitical conditions.';
+
+  // render per-article exposure
+  const intro = `Based on ${relevant.length} active headlines, here is how your portfolio is positioned relative to current macro themes.`;
+  document.getElementById('port-exposure-intro').textContent = intro;
+
+  document.getElementById('port-exposure-list').innerHTML = relevant.map(article => {
+    const stockRows = portfolio.map(h => {
+      const level = getExposureLevel(h.ticker, article.category);
+      const desc = getExposureDesc(h.ticker, article.category, level);
+      const pct = level === 'high' ? 85 : level === 'medium' ? 45 : 15;
+      const barClass = 'exposure-bar-' + level;
+      const textClass = 'exposure-' + level;
+      return `
+        <div class="exposure-stock-row">
+          <span class="exposure-stock-name">${h.ticker}</span>
+          <span class="exposure-stock-desc">${desc}</span>
+          <div class="exposure-bar-wrap">
+            <div class="exposure-bar-fill ${barClass}" style="width:${pct}%"></div>
+          </div>
+          <span class="exposure-pct ${textClass}">${level.toUpperCase()}</span>
+        </div>`;
+    }).join('');
+
+    const bc = badgeClass(article.category);
+    return `
+      <div class="exposure-card">
+        <div class="exposure-card-header">
+          <span class="exposure-headline">${article.title}</span>
+          <span class="badge ${bc}">${fmtCat(article.category)}</span>
+        </div>
+        <div class="exposure-stocks">${stockRows}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('port-exposure-section').style.display = 'block';
+}
+
 </script>
 </body>
 </html>
